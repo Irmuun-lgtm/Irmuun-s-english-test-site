@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A2 English Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .container { width: 80%; max-width: 600px; margin: auto; text-align: center; }
+    .button { padding: 10px 20px; margin: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+    .question { font-weight: bold; }
+    .options { margin: 10px 0; }
+    .result { font-size: 1.2em; font-weight: bold; color: #333; }
+  </style>
+</head>
+<body>
+
+  <!-- Admin Login Form -->
+  <div id="login" class="container">
+    <h1>Admin Login</h1>
+    <input type="email" id="adminEmail" placeholder="Enter your email"><br><br>
+    <input type="password" id="adminPassword" placeholder="Enter your password"><br><br>
+    <button class="button" onclick="login()">Login</button>
+    <p id="loginMessage" style="color: red;"></p>
+  </div>
+
+  <div id="home" class="container" style="display: none;">
+    <h1>Welcome to the A2 English Test</h1>
+    <p>Test your English skills with a simple, easy quiz.</p>
+    <button class="button" onclick="startTest()">Start Test</button>
+  </div>
+
+  <div id="test" class="container" style="display: none;">
+    <p class="question" id="question-text">Question text here...</p>
+    <div class="options">
+      <button class="button" onclick="answerQuestion(0)">Option 1</button>
+      <button class="button" onclick="answerQuestion(1)">Option 2</button>
+      <button class="button" onclick="answerQuestion(2)">Option 3</button>
+      <button class="button" onclick="answerQuestion(3)">Option 4</button>
+    </div>
+  </div>
+
+  <div id="results" class="container" style="display: none;">
+    <p class="result" id="result-text">Your score: </p>
+    <button class="button" onclick="restartTest()">Try Again</button>
+  </div>
+
+  <script>
+    // Admin login credentials
+    const adminEmail = "sergelenirmuun@gmail.com"; 
+    const adminPassword = "irmuun0621"; 
+
+    function login() {
+      const email = document.getElementById("adminEmail").value;
+      const password = document.getElementById("adminPassword").value;
+
+      if (email === adminEmail && password === adminPassword) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("home").style.display = "block";
+      } else {
+        document.getElementById("loginMessage").textContent = "Invalid email or password. Please try again.";
+      }
+    }
+
+    // Sample questions
+    const questions = [
+      { text: "Which sentence is in the past tense?", options: ["I walk to school every day.", "She will walk to school tomorrow.", "He walked to school yesterday.", "They are walking to school now."], answer: 2 },
+      { text: "Which word means the same as 'happy'?", options: ["Sad", "Angry", "Joyful", "Tired"], answer: 2 },
+      { text: "Choose the correct sentence.", options: ["He go to school every day.", "They goes to school every day.", "She goes to school every day.", "We is going to school every day."], answer: 2 },
+      { text: "Complete the sentence: 'I will meet you ___ the bus stop.'", options: ["on", "at", "in", "by"], answer: 1 },
+      { text: "Fill in the blank: 'She is ___ honest person.'", options: ["a", "an", "the", "none"], answer: 1 }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function startTest() {
+      document.getElementById("home").style.display = "none";
+      document.getElementById("test").style.display = "block";
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      if (currentQuestion < questions.length) {
+        document.getElementById("question-text").textContent = questions[currentQuestion].text;
+        const options = document.querySelectorAll(".options .button");
+        options.forEach((button, index) => {
+          button.textContent = questions[currentQuestion].options[index];
+        });
+      } else {
+        showResults();
+      }
+    }
+
+    function answerQuestion(selected) {
+      if (selected === questions[currentQuestion].answer) {
+        score++;
+      }
+      currentQuestion++;
+      loadQuestion();
+    }
+
+    function showResults() {
+      document.getElementById("test").style.display = "none";
+      document.getElementById("results").style.display = "block";
+      document.getElementById("result-text").textContent = `Your score: ${score} out of ${questions.length}`;
+    }
+
+    function restartTest() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById("results").style.display = "none";
+      document.getElementById("home").style.display = "block";
+    }
+  </script>
+</body>
+</html>
